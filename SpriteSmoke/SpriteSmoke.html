@@ -1,0 +1,79 @@
+﻿<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>SpriteSmoke</title>     
+</head>
+<body>
+    <canvas id="my_canvas" width = "640" height = "640" style = "border:6px solid #993300; background:#3399ff;"> 
+	Your browser does not support Canvas</canvas>
+	<script>
+	
+		var canvas = document.getElementById("my_canvas"); 
+		var ctx = canvas.getContext('2d') ;
+		var f=0;
+	    var w= canvas.width;
+		var h= canvas.height;
+		var count=0;
+		var countb=0;
+		var x, y, xb, yb;
+		var sh=0;
+		var img= new Image();
+		img.src= "Smoke.png";
+		img.onload= draw();
+			
+		var bird= new Image();
+		bird.src= "BirdFly.png";
+		bird.onload= drawb();
+			
+		function drawb(){
+		  
+			xb= (countb%5)*200;
+            yb= Math.floor(countb/5)*200;
+			ctx.drawImage(bird, xb, yb, 200, 200, w/2, h/3, 200, 200);
+			
+            if(countb == 9){
+			    countb=0;
+			}
+            else{
+			    countb++;
+			}
+				
+		}	
+		
+	    	
+		function draw(){
+		 
+		    x= (count%4)*100;
+            y= Math.floor(count/4)*100;
+			ctx.drawImage(img, x, y, 100, 100, w/2, 7*h/8, 60, 60);
+			
+            if(count == 3){
+			    count=0;
+			}
+            else{
+			    count++;
+			}
+			
+		}
+		
+		function drawAll(){
+		    ctx.clearRect(0,0,canvas.width, canvas.height);
+		
+		   //sh++;
+		    drawb();
+			
+		   if(sh==10){
+		        draw();
+              //  sh=0;
+			}
+			
+			else{sh++;}
+            			
+		}	
+					
+		setInterval(drawAll, 120);
+	
+		
+	</script>
+</body>
+</html>

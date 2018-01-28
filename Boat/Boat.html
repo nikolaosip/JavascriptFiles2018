@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Boat</title>
+</head>
+
+<body>
+    <canvas id="my_canvas" style= "border:4px solid #ff0066; background:#ccffff; "></canvas>
+
+
+    <script>
+	    canvas= document.getElementById("my_canvas");
+		ctx= canvas.getContext('2d');
+		canvas.width= window.innerWidth-25;
+		canvas.height= window.innerHeight-25;
+		var w= canvas.width;
+		var h= canvas.height;
+		var vx= 0;
+		var vy= h/2;
+		var ss=[];
+		var sea;
+		var meter=0;
+		var count=0;
+		var wx;
+		var wy;
+		var waveArray=[];
+		
+		var waveIm= new Image();
+		waveIm.src= "wave2.png";
+		waveIm.onload= drawImage;
+		
+		var image= new Image();
+		image.src= "BoatPS.png";
+		//image.addEventListener("load", drawImage(), false);
+		
+		var seaPh= new Image();
+        seaPh.src= "seawaves.gif";
+ 		
+		function Smoke(x,y){
+		    this.x= x;
+			this.y= y;
+			this.r= 1+ Math.random()*4;
+			
+			this.show= function(){
+				ctx.beginPath();
+			    ctx.lineWidth=2;			
+			    ctx.strokeStyle= 'black';
+				ctx.arc(this.x, this.y, this.r, 2*Math.PI, false);
+				ctx.stroke();	
+			
+			};
+			
+			this.move= function(){
+			this.x -= 4*Math.random()-2;
+			this.y -= 1.2*Math.random();
+			
+			};		
+				
+		}
+		
+	    function drawImage(){
+		
+		   
+	   
+	        for(var i=0; i<2; i++){
+			    ss.push(new Smoke(vx+120, vy));
+			}
+	        
+			ctx.clearRect(0,0,canvas.width, canvas.height);
+			// ...................Waves Sprite sheet ......................
+			meter++;
+			for(var p=0; p<6; p++){
+			wx= (count%6)*200;
+            wy= Math.floor(count/6)*200;
+			ctx.drawImage(waveIm, wx, wy, 200, 200,p*100,h-200, 100, 100);
+			 if(count == 11){
+			    count=0;
+			}
+            else{
+			    if(meter%10==0)
+			    {count++;}
+			}
+			}
+			
+			//................... Boat ..................
+			
+            ctx.drawImage(image, vx, vy, 270, 180);	
+			
+			ctx.drawImage(seaPh, 0, 450, 960,240);
+			
+            vx+=.4;
+            vy = h/2 + 14*Math.cos(vx/30); 			
+            
+			if(vx>w){
+			    vx=-180; 
+			 
+			}
+            
+	        for(var j=0; j<ss.length; j++){
+			    ss[j].show();
+				ss[j].move();
+				
+				if(ss[j].y<120){
+				    ss.splice(j,1);
+				}
+			}
+			
+			if(Math.cos(vx/30)>0){
+			    sea=false;
+			
+			}
+			
+			else{sea=true;}
+			
+			ctx.beginPath();
+			ctx.strokeStyle= 'blue';
+            ctx.arc(vx, vy+180,100, 0, Math.PI, sea);
+            ctx.closePath(); 			
+			ctx.stroke(); 
+			
+			
+			ctx.beginPath();
+			ctx.fillStyle= 'blue';
+			ctx.moveTo(0, 3*h/4 +10);
+			ctx.lineTo(w, 3*h/4+10);
+			ctx.lineTo(w, h);
+			ctx.lineTo(0, h);
+			ctx.fill();			
+			}
+		
+		setInterval(function(){
+		    
+		    drawImage();
+		
+		}, 1);
+		
+			
+		//window.addEventListener("load", drawImage(), false);
+		
+	
+	</script>
+	
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+﻿<html>
+<head>
+    <title>CanvasInnerWidth</title>
+</head>
+
+<body>
+    <canvas id="my_canvas" style= "border:4px solid #ff0066; background:#ccffff;"></canvas>
+
+</body>
+    <script>
+	    var canvas= null;
+		var ctx= null;
+		var img=null;
+		
+		var setup = function(){
+		    canvas= document.getElementById("my_canvas");
+			ctx= canvas.getContext('2d');
+			canvas.width= window.innerWidth;
+			canvas.height= window.innerHeight;
+			
+			img= new Image();
+			img.onload= onImageLoad;
+			img.src= './greekFlag.jpg';
+		
+		};
+		
+		var onImageLoad= function(){
+		    console.log('IMAGE !!!!');
+		    ctx.drawImage(img,20,20);
+		
+		};
+		setup();
+		
+		/*window.addEventListener('load', function(event){
+	     setup();
+	    }); */
+	
+	</script>
+	
+
+
+</html>
